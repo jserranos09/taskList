@@ -1,0 +1,35 @@
+creating task list
+
+Add the database info in .env so you can connect to the database
+- DB database, username, password, App debug = true, app env = dev
+
+1. database migration
+php artisan make:migration create_tasks_table --create=tasks
+- Add a migration to control the parts needed for the database. adds create_tasks_table to database.migration
+- add everything you want in your table. already has a couple of things in it like timestamps.
+
+2. Migrate your database to add the tables
+php artisan migrate
+- adds "tasks" table to the database
+
+3. Create model
+php artisan make:model Task
+- will assume the databse table (tasks) is the plural form of the model name (task)
+- models shows the rules/relatiohsips for the database tables, also adds routes
+- theres nothing in this Eloquent model.
+
+4. Add controller
+php artisan make:controller TaskController —resource
+- makes a Task controller. This is the brain of the app.
+- -- resource adds index/create/store/show/edit/update/destory
+- This app will use index, store, destroy
+
+5. Add Route to connect to controller on web.php
+Route::resource('/task', 'App\Http\Controllers\TaskController');
+Route::get('/', 'App\Http\Controllers\TaskController@index');
+- these two are all we need for the app.
+- routes are used to point URL's to controllers or functions that should be executed when a user accesses a given page
+
+6. display/add views
+- created pages: tasks/ Common folder - errors / layout folder - app
+- you can add otthe controller here as well to make the view do what you want

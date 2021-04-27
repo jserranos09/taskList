@@ -1,0 +1,82 @@
+//A slug is the part of a URL which identifies a particular page on a website
+Route::get('post/{slug}', [PostController::class, 'show']);
+//This will make sure the Laravel router treats everything after post/ as a parameter, and give it a name slug when Laravel sends it to the backend. Route parameters are always encased within {}
+
+-------
+
+Model: "What should we show the user?". Stores & manages data.
+View: "How should we show it to the user (what will it look like)?". User Interface
+Controller: "How do I figure out which models and views to show the user?". Handles requests
+
+Migrations: Migrations are used to create, modify as well as share the application’s database schema
+
+--------
+
+Controllers can group related request handling logic into a single class. For example, a UserController class might handle all incoming requests related to users, including showing, creating, updating, and deleting users
+
+---------
+
+public function show($slug)
+    {
+        // From the databsase, selects from the posts table, where the slug column is equal to $slug and give the first result
+        // another way is: $post = SELECT * FROM posts WHERE ($slug) VALUES (slug) LIMIT 1;
+        // another way is: $post = DB::table('posts')->where('slug', $slug)->firstOrFail();
+        // Post is the model
+        return view('post', [
+            'post' => Post::where('slug', $slug)->firstOrFail()
+        ]);
+    }
+
+// this is cleaner. The route will be:
+use App\Http\Controllers\IndexController;
+
+Route::get('/', [IndexController::class, 'index']);
+
+or
+
+Route::get('/posts/{slug}', 'App\Http\Controllers\PostsController@show');
+
+
+// able to use this if the controller only has one action
+Route::get('/', IndexController::class);
+
+
+------
+
+// this means Laravel will look for a blade template named “sidebar.blade.php“, and import it here.
+@section('sidebar')
+
+-----
+
+Relations are used in models. Shows the relatiosships with different coloumns in a database coloumn and connects them.
+1. hasOne : One to One    -    each User is associated with one Phone
+public function phone()
+    {
+        return $this->hasOne('App\Phone');
+    }
+2. belongsTo : One to One (Inverse)  - each Phone would belong to one User
+public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+3. hasMany : One to Many  - Each user has many posts
+public function posts()
+    {
+        return $this->hasMany('App\Post');
+    }
+
+
+-------
+
+Between Category and Post (One to Many) - for a blog
+We need to have a category_id column in the posts table, which stores the id of the category that has this post.
+app/Models/Category.php
+
+/**
+ * Get the posts for the user.
+ */
+public function posts()
+{
+    return $this->hasMany('App\Models\Post');
+}
+
