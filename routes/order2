@@ -33,3 +33,35 @@ Route::get('/', 'App\Http\Controllers\TaskController@index');
 6. display/add views
 - created pages: tasks/ Common folder - errors / layout folder - app
 - you can add otthe controller here as well to make the view do what you want
+
+
+Adding authentication:
+
+7. Install the UI auth Package
+composer require laravel/ui
+
+8. Install auth scaffolding
+php artisan ui vue --auth
+- this adds login, register, forget passord, etc.
+
+9. install npm
+npm install
+
+10. compile npm Package
+npm run dev
+- this will add two folders inside public - css / js
+- they're linked with the master view file of user authentication
+
+11. migrate tables
+php artisan migrate
+- add the tables to the database
+
+12. Make small changes
+Might have to use this:
+php artisan serve
+
+- add to web.php
+use Illuminate\Support\Facades\Auth;
+
+- Had to change RouteServiceProvider.php
+public const HOME = '/dashboard'; to public const HOME = '/home';

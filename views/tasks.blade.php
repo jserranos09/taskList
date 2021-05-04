@@ -14,14 +14,16 @@
                     @include('common.errors')
 
                     <!-- New Task Form -->
+                    <!-- redirects to the same page after submitted-->
                     <form action="{{ url('task')}}" method="POST" class="form-horizontal">
-                        <!-- used when theres a form so that the request if verified-->
+                        <!-- used when theres a form so that the request is verified-->
                         {{ csrf_field() }}
 
                         <!-- Task Name -->
                         <div class="form-group">
-                            <label for="task-name" class="col-sm-3 control-label">Task</label>
+                            <label for="task-name" class="col-sm-3 control-label">Name</label>
 
+                            <!-- adds the task field to input new task-->
                             <div class="col-sm-6">
                                 <input type="text" name="name" id="task-name" class="form-control" value="{{ old('task') }}">
                             </div>
@@ -38,9 +40,9 @@
                     </form>
                 </div>
             </div>
-
             <!-- Current Tasks -->
-            <!-- this comes from the databse table named "tasks-->
+
+            <!-- $users comes from the databse table named "tasks-->
             @if (count($tasks) > 0)
                 <div class="panel panel-default">
                     <div class="panel-heading">

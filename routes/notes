@@ -1,0 +1,45 @@
+
+Adding authentication to laravel project
+In terminal:
+$ composer require laravel/ui --dev
+$ php artisan ui vue (or bootstrap) --auth
+$ npm install && npm run dev
+
+-------
+
+Routing
+1. web.php returns a controller to view on the webpage    //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+2. this goes to the HomeController and runs that code
+3.  The first code that runs is public function __construct() which runs $this->middleware('auth');
+    - This makes sure the user is authorized before showing the page
+4. If the user is authorized, they can login.
+
+-------
+
+Flow if a user forgets their password:
+1. CLick 'Forgot Password"
+2. Fill out a form with their email address.
+3. Prepare a unique token and associate it with the users's account
+4. Send an email with a unique link back to our site that confirms email ownership
+5. Link back to the website, conform the tokens, set a new password
+
+------
+
+working in tinker: allows you to interact with your entire Laravel application through console window without the need of accessing web interface
+- App\Model\Article::first()     -     shows the first article from the database
+- Then able to get anything anything from the table:
+- App\Model\Article::first()->title
+
+App\Model\Article::all()       -    everything in the dataase in the Articles table
+
+-------
+
+How to access information that is submitted/posted
+$request->name
+dd($request->name)
+
+-------
+
+php artisan make:controller PostController -resource
+- used to make your own requests folder and page.
+- use it if you want make your own rules about requirments.
