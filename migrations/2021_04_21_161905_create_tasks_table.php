@@ -13,9 +13,14 @@ class CreateTasksTable extends Migration
      */
     public function up()
     {
+        // uses Schema facade to create/ modifty database tables and columns
         Schema::create('tasks', function (Blueprint $table) {
             $table->increments('id');
+            // might need to migrate to make this unique
             $table->string('name');
+            // This column will store the id of the user that the task belongs to.
+            $table->bigInteger('user_id');
+            //$table->string('slug')->unique();
             $table->timestamps();
         });
     }
@@ -30,3 +35,4 @@ class CreateTasksTable extends Migration
         Schema::dropIfExists('tasks');
     }
 }
+
