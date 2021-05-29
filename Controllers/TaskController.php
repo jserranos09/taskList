@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 
 use Illuminate\Support\Facades\DB;
@@ -19,17 +22,21 @@ class TaskController extends Controller
      */
     public function index()
     {
+        // This will get all the tasks created in the database
+        $allTasks = Task::orderBy('created_at', 'asc')->get();
+        // this gets the task that is assigned by the user who is signed in
+        $usersTasks = Task::where('user_id', '=', auth()->user()->id)->orderBy('created_at', 'asc')->get();
+
         // returns the tasks view which is the main page. Accepts 2 aruguments, which the second one is an array
         return view('tasks', [
-            // this is the name of the table in the database. Task is the name of the controller
-            // this is used in the taks.blade.php to show the data
-            'tasks' => Task::orderBy('created_at', 'asc')->get()
+            // this is used in the taks.blade.php to show the data. creates the $alltasks and userTasks variable the equals the Task order
+            'allTasks' => $allTasks,
+            'usersTasks' => $usersTasks
         ]);
 
         /* this works as well
         // gets all tasks in desending order
         $tasks = Task::latest()->get();
-
         return view('tasks', ['tasks' => $tasks]);
         */
     }
@@ -54,10 +61,12 @@ class TaskController extends Controller
     {
         // adds a new task and saves to the database
 
+
         // must include the Validator to use the Validator variable. variable name can be anything
         $validator = Validator::make($request->all(), [
-            // makes the name field required for the users
-            'name' => 'required|max:255',
+            // makes the name field required for the users.
+            // makes the user nopt able ot duplicate tasks
+            'name' => 'required|max:255|unique:tasks',
         ]);
 
         // if the vaiable fails, it will redirerct to the home page
@@ -71,7 +80,13 @@ class TaskController extends Controller
 
         // Task comes from the name of the controller Taskcontroller
         $task = new Task;
+        // looks at the name of the task and makes sure its validated.
         $task->name = $request->name;
+        //dd($request->name);
+        //dd($task);
+        // sets the user is of task to the current user whos logged in by the users id number.
+        $task->user_id = auth()->user()->id;
+        //dd($task);
         // saves the new task
         $task->save();
 
@@ -85,9 +100,20 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        /* I dont know why this was added. Dont think its nessesary
+        //get the requested task. 'Task' is the name of the controller
+        $task = Task::query()
+            ->where('is_published', true)
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        //return the data to the corresponding view
+        return view('post', [
+            'task' => $task,
+        ]);
+        */
     }
 
     /**
