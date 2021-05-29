@@ -33,3 +33,5 @@ Route::resource('/task', 'App\Http\Controllers\TaskController');
 //Route::get('/task/{slug}', 'TaskController@show');
 
 Route::resource('/contact', 'App\Http\Controllers\ContactUsController');
+
+// github change
