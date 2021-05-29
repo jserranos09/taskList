@@ -42,11 +42,11 @@
             </div>
             <!-- Current Tasks -->
 
-            <!-- $users comes from the databse table named "tasks-->
-            @if (count($tasks) > 0)
+            <!-- $userTasks comes from the Taskcontroller. -->
+            @if (count($usersTasks) > 0)
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Current Tasks
+                        Your Tasks
                     </div>
 
                     <div class="panel-body">
@@ -56,7 +56,7 @@
                                 <th>&nbsp;</th>
                             </thead>
                             <tbody>
-                                @foreach ($tasks as $task)
+                                @foreach ($usersTasks as $task)
                                     <tr>
                                         <!-- gets the task name from the database-->
                                         <td class="table-text"><div>{{ $task->name }}</div></td>
@@ -80,8 +80,57 @@
                             </tbody>
                         </table>
                     </div>
+
+
                 </div>
+
             @endif
+
+                        <!-- $tasks comes from -->
+                        @if (count($allTasks) > 0)
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                All Tasks in Database
+                            </div>
+
+                            <div class="panel-body">
+                                <table class="table table-striped task-table">
+                                    <thead>
+                                        <th>Task</th>
+                                        <th>&nbsp;</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($allTasks as $task)
+                                            <tr>
+                                                <!-- gets the task name from the database-->
+                                                <td class="table-text"><div>{{ $task->name }}</div></td>
+
+                                                <!-- Task Delete Button -->
+                                                <td>
+                                                    <!--method is POST even though were responding to the request using Route::delete -->
+                                                    <form action="{{ url('task/'.$task->id) }}" method="POST">
+                                                        {{ csrf_field() }}
+                                                        <!-- this is used to delete because we used the POST method-->
+                                                        <!-- generates a hidden form input that Laravel recognizes and will use to override the actual HTTP request method.-->
+                                                        {{ method_field('DELETE') }}
+
+                                                        <button type="submit" class="btn btn-danger">
+                                                            <i class="fa fa-btn fa-trash"></i>Delete
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                    @endif
+
         </div>
+
     </div>
 @endsection
