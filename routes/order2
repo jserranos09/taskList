@@ -35,6 +35,7 @@ Route::get('/', 'App\Http\Controllers\TaskController@index');
 - you can add otthe controller here as well to make the view do what you want
 
 
+
 Adding authentication:
 
 7. Install the UI auth Package
@@ -65,3 +66,21 @@ use Illuminate\Support\Facades\Auth;
 
 - Had to change RouteServiceProvider.php
 public const HOME = '/dashboard'; to public const HOME = '/home';
+
+
+13. Add auth to the pages
+Route::get('/', 'App\Http\Controllers\TaskController@index')->middleware('auth');
+- this will make the user have to log-in before viewing the task list
+
+Adding personal logins / tasks
+
+14. Add relationships
+return $this->belongsTo('App\Models\Task');
+return $this->hasMany('App\Models\Task');
+- add a relationship in Models with the user and tasks
+
+15. add a column to the database
+php artisan make:migration add_user_id_to_tasks --table="tasks"
+php artisan make:migration add_slug_to_tasks --table="tasks"
+
+- this adds user_id column to the tasks database
