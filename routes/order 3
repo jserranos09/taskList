@@ -1,0 +1,39 @@
+controller resources (index/show/edit/destory/etc)
+CRUD (Create, Read, Update, Delete)
+
+1. make the model and migration
+php artisan make:model Contact --migration
+- will create the a contact model and migration
+
+2. Add what you want in the database
+$table->string('first_name');
+...
+
+3. migrate to add to database
+php artisan migrate
+- creates and adds everything you wanted in the database
+
+4. Make model "$fillable"
+protected $fillable = [
+    'first_name',
+    ...
+
+5. make controller w/ resources
+php artisan make:controller ContactController --resource
+- creates a controller with all resources (index/show/edit/destory/etc)
+
+6. create the route
+Route::resource('contacts', 'App\Http\Controllers\ContactController');
+- adds the route so you can view (use all other resources) in the controller
+
+7. add to the controller
+- first we add to the "store" and "create"
+
+8. add view pages
+- add pages for the views (base/contacts.create.edit.index)
+
+9. add contacts controller stuff section of contacts controller
+- index: gets all contacts from database / returns index view
+- edit: gets contact id from database / returns edit view
+- update: validates some inputs / finds all the information and displays them
+- destroy: gets contact id / deletes the contact / redirects the view and adds success
